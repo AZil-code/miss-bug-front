@@ -30,7 +30,7 @@ async function remove(bugId) {
 }
 async function save(bug) {
    const method = bug._id ? 'put' : 'post';
-   const url = BASE_URL + (bug._id || '');
+   const url = BASE_URL + '/' + (bug._id || '');
 
    try {
       const { data: savedBug } = await axios[method](url, bug);
