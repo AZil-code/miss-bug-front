@@ -13,9 +13,9 @@ export const bugService = {
    remove,
 };
 
-async function query(filterBy) {
+async function query(filterBy, sortBy) {
    // return storageService.query(STORAGE_KEY)
-   const { data: bugs } = await axios.get(BASE_URL + '/', { params: filterBy });
+   const { data: bugs } = await axios.get(BASE_URL + '/', { params: { ...filterBy, ...sortBy } });
    return await bugs;
 }
 async function getById(bugId) {

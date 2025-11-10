@@ -7,18 +7,27 @@ import { BugFilter } from '../cmps/BugFliter.jsx';
 
 export function BugIndex() {
    const [bugs, setBugs] = useState([]);
-   const [filterBy, setFilterBy] = useState({});
+   const [filterBy, setFilterBy] = useState({ pageIdx: 0 });
+   const [sortBy, setSortBy] = useState({ sortDir: 1 });
 
    useEffect(() => {
       loadBugs();
-   }, []);
+   }, [filterBy, sortBy]);
 
    function onSetFilterBy(newFilter) {
-      setFilterBy((prevFilter) => ({ ...prevFilter, ...newFilter }));
+      setFilterBy((prevFilter) => {
+         return { ...prevFilter, ...newFilter };
+      });
+   }
+
+   function onSetSortBy(newSort) {
+      setSortBy((prevSort) => {
+         return { ...prevSort, ...newSort };
+      });
    }
 
    async function loadBugs() {
-      const bugs = await bugService.query(filterBy);
+      const bugs = await bugService.query(filterBy, sortBy);
       setBugs(bugs);
    }
 
@@ -70,7 +79,7 @@ export function BugIndex() {
       <section>
          <h3>Bugs App</h3>
          <main>
-            <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+            <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} sortBy={sortBy} onSetSortBy={onSetSortBy} />
             <button onClick={onAddBug}>Add Bug ⛐</button>
             <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
          </main>
