@@ -1,6 +1,8 @@
-import axios from 'axios';
+import Axios from 'axios';
 // import { storageService } from './async-storage.service.js';
 // import { utilService } from './util.service.js'
+
+const axios = Axios.create({ withCredentials: true });
 
 // const STORAGE_KEY = 'bugDB';
 // const BASE_URL = 'http://127.0.0.1:3030/api';
@@ -33,7 +35,7 @@ async function save(bug) {
    const url = BASE_URL + '/' + (bug._id || '');
 
    try {
-      const { data: savedBug } = await axios[method](url, bug);
+      const { data: savedBug } = await axios[method](url, bug, { withCredentials: true });
       return savedBug;
    } catch (err) {
       console.error('Save error - ', err);

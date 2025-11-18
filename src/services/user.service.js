@@ -1,6 +1,10 @@
-import axios from 'axios';
+import Axios from 'axios';
 // import { storageService } from './async-storage.service.js';
 // import { utilService } from './util.service.js'
+
+var axios = Axios.create({
+   withCredentials: true,
+});
 
 // const STORAGE_KEY = 'userDB';
 // const BASE_URL = 'http://127.0.0.1:3030/api';
@@ -11,6 +15,7 @@ const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser';
 export const userService = {
    query,
    getById,
+   getByUsername,
    save,
    remove,
    getLoggedinUser,
@@ -31,6 +36,13 @@ async function getById(userId) {
    const { data: user } = await axios.get(`${BASE_URL}/${userId}`);
    return user;
 }
+async function getByUsername(username) {
+   // return storageService.get(STORAGE_KEY, userId)
+   const { data: user } = await axios.get(`${BASE_URL}/${username}`);
+   console.log(user);
+   return user;
+}
+
 async function remove(userId) {
    // return storageService.remove(STORAGE_KEY, userId)
    const res = await axios.delete(`${BASE_URL}/${userId}`);
@@ -68,7 +80,7 @@ async function signup(credentials) {
 }
 
 function saveLocalUser(user) {
-   user = { _id: user._id, fullname: user.fullname, isAdmin: user.isAdmin };
+   user = { _id: user._id, fullname: user.fullname, username: user.username, isAdmin: user.isAdmin };
    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user));
    return user;
 }
